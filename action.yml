@@ -10,39 +10,44 @@ outputs:
   password:
     description: "Password"
     value: ${{ steps.mark_password.outputs.password }}
+
 runs:
   using: "composite"
   steps:
+    - name: Set secret filename
+      run: echo "action_secret_file=secrets-$(date +%s).json" >> $GITHUB_ENV
+      shell: bash
+
     - name: "Get Secrets to file"
-      run: echo '${{ inputs.secret }}' > secret.json
+      run: echo '${{ inputs.secret }}' > ${{ env.action_secret_file }}
       shell: bash
 
     - name: get appId
       id: app_id
-      uses: dotnetthailand/actions-json-get-key@v1
+      uses: mildronize/actions-json-get-key@v1
       with:
-        path: "secret.json"
+        path: "${{ env.action_secret_file }}"
         prop_path: "appId"
 
     - name: get tenant
       id: tenant
-      uses: dotnetthailand/actions-json-get-key@v1
+      uses: mildronize/actions-json-get-key@v1
       with:
-        path: "secret.json"
+        path: "${{ env.action_secret_file }}"
         prop_path: "tenant"
 
     - name: get display name
       id: display_name
-      uses: dotnetthailand/actions-json-get-key@v1
+      uses: mildronize/actions-json-get-key@v1
       with:
-        path: "secret.json"
+        path: "${{ env.action_secret_file }}"
         prop_path: "displayName"
 
     - name: get password
       id: password
-      uses: dotnetthailand/actions-json-get-key@v1
+      uses: mildronize/actions-json-get-key@v1
       with:
-        path: "secret.json"
+        path: "${{ env.action_secret_file }}"
         prop_path: "password"
         output_path: "password.txt"
 
