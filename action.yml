@@ -67,3 +67,8 @@ runs:
         echo "::add-mask::$secret"
         echo "::set-output name=password::$secret"
       shell: bash
+      
+branding:
+  color: "blue"
+  icon: "unlock"  
+
