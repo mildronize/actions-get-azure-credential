@@ -6,7 +6,7 @@ Simple GitHub Action Helper to extract Azure Service Principal from secrets
 
 The secrets should be hidden from the log, but it still require to write the secret into file.
 
-![](docs/screenshot.png)
+![screenshot](docs/screenshot.png)
 
 ## Usage
 
