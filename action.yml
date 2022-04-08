@@ -24,7 +24,9 @@ runs:
   using: "composite"
   steps:
     - name: Set secret filename
-      run: echo "action_secret_file=secrets-$(date +%s).json" >> $GITHUB_ENV
+      run: |
+        echo "action_secret_file=secrets-$(date +%s).json" >> $GITHUB_ENV
+        echo "action_password_file=password-$(date +%s).txt" >> $GITHUB_ENV
       shell: bash
 
     - name: "Get Secrets to file"
@@ -58,14 +60,20 @@ runs:
       with:
         path: "${{ env.action_secret_file }}"
         prop_path: "password"
-        output_path: "password.txt"
+        output_path: "${{ env.action_password_file }}"
 
     - name: Mask Password
       id: mark_password
       run: |
-        secret=`cat password.txt`
+        secret=`cat ${{ env.action_password_file }}`
         echo "::add-mask::$secret"
         echo "::set-output name=password::$secret"
+      shell: bash
+
+    - name: Clean tmp files
+      run: |
+        rm -f ${{ env.action_secret_file }}
+        rm -f ${{ env.action_password_file }}
       shell: bash
       
 branding:
