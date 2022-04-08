@@ -1,0 +1,55 @@
+name: "Get Azure Credential"
+description: "GitHub Action Helper to extract Azure Service Principal from secrets"
+author: "Thada Wangthammang"
+inputs:
+  secret:
+    description: "secret string"
+    required: true
+
+outputs:
+  password:
+    description: "Password"
+    value: ${{ steps.mark_password.outputs.password }}
+runs:
+  using: "composite"
+  steps:
+    - name: "Get Secrets to file"
+      run: echo '${{ inputs.secret }}' > secret.json
+      shell: bash
+
+    - name: get appId
+      id: app_id
+      uses: dotnetthailand/actions-json-get-key@v1
+      with:
+        path: "secret.json"
+        prop_path: "appId"
+
+    - name: get tenant
+      id: tenant
+      uses: dotnetthailand/actions-json-get-key@v1
+      with:
+        path: "secret.json"
+        prop_path: "tenant"
+
+    - name: get display name
+      id: display_name
+      uses: dotnetthailand/actions-json-get-key@v1
+      with:
+        path: "secret.json"
+        prop_path: "displayName"
+
+    - name: get password
+      id: password
+      uses: dotnetthailand/actions-json-get-key@v1
+      with:
+        path: "secret.json"
+        prop_path: "password"
+        output_path: "password.txt"
+
+    - name: Mask Password
+      id: mark_password
+      run: |
+        secret=`cat password.txt`
+        echo "::add-mask::$secret"
+        echo "::set-output name=password::$secret"
+      shell: bash
