@@ -1,5 +1,5 @@
 name: "Get Azure Credential"
-description: "GitHub Action Helper to extract Azure Service Principal from secrets"
+description: "Simple GitHub Action Helper to extract Azure Service Principal from secrets"
 author: "Thada Wangthammang"
 inputs:
   secret:
@@ -7,6 +7,15 @@ inputs:
     required: true
 
 outputs:
+  app-id:
+    description: "App ID"
+    value: ${{ steps.app_id.outputs.prop }}
+  display-name:
+    description: "Display Name"
+    value: ${{ steps.display_name.outputs.prop }}
+  tenant:
+    description: "tenant id"
+    value: ${{ steps.tenant.outputs.prop }}
   password:
     description: "Password"
     value: ${{ steps.mark_password.outputs.password }}

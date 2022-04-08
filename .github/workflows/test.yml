@@ -14,5 +14,10 @@ jobs:
         uses: ./
         with:
           secret: ${{ secrets.Azure_Credential }}
-      - run: echo ${{ steps.credential.outputs.password }}
+      - run: |
+          echo App ID: ${{ steps.credential.outputs.app-id }}
+          echo Display Name: ${{ steps.credential.outputs.display-name }}
+          echo Tenant: ${{ steps.credential.outputs.tenant }}
+          echo Password: ${{ steps.credential.outputs.password }}
+      
     
